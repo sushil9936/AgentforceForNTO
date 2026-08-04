@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NTO Agent — KPI Dashboard</title>
+<style>
+  :root { --bg:#f7f8fa; --card:#fff; --ink:#1a202c; --muted:#718096;
+           --line:#e2e8f0; --ok:#2f855a; --bad:#c53030; --accent:#2b6cb0; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+          font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:1000px; margin:0 auto; padding:28px 20px 60px; }
+  h1 { font-size:22px; margin:0 0 2px; }
+  .meta { color:var(--muted); font-size:13px; margin-bottom:22px; }
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px;
+           padding:16px; }
+  .card .label { color:var(--muted); font-size:12px; text-transform:uppercase;
+                  letter-spacing:.04em; }
+  .card .value { font-size:30px; font-weight:650; margin-top:6px; }
+  .card .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+  .trends { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px; }
+  .trend { background:var(--card); border:1px solid var(--line); border-radius:12px;
+            padding:14px; }
+  .trend-head { font-size:13px; color:var(--muted); display:flex;
+                 justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .trend-latest { color:var(--accent); font-weight:650; font-size:15px; }
+  h2 { font-size:16px; margin:30px 0 10px; }
+  table { width:100%; border-collapse:collapse; background:var(--card);
+           border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  th, td { text-align:left; padding:9px 11px; border-bottom:1px solid var(--line);
+            font-size:13px; vertical-align:top; }
+  th { background:#fafbfc; color:var(--muted); font-weight:600; }
+  tr:last-child td { border-bottom:none; }
+  .prompt { max-width:220px; color:var(--ink); }
+  .resp { max-width:280px; color:var(--muted); }
+  .badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px;
+            font-weight:650; }
+  .badge.ok { background:#e6fffa; color:var(--ok); }
+  .badge.bad { background:#fff5f5; color:var(--bad); }
+  .badge.muted { background:#edf2f7; color:var(--muted); }
+  .muted { color:var(--muted); font-size:13px; }
+</style></head>
+<body><div class="wrap">
+  <h1>NTO Customer Support — Agent KPI Dashboard</h1>
+  <div class="meta">Latest run: <b>v2-guardrail</b> &middot; 2026-08-04T22:34:15Z &middot; 1 run(s) recorded</div>
+  <div class="cards"><div class="card"><div class="label">Deflection rate</div><div class="value">100.0%</div><div class="sub">answered without bailing</div></div><div class="card"><div class="label">Accuracy</div><div class="value">18/18</div><div class="sub">100.0% accuracy</div></div><div class="card"><div class="label">Faithfulness</div><div class="value">18/18</div><div class="sub">100.0% faithful</div></div><div class="card"><div class="label">Avg latency</div><div class="value">3.8s</div><div class="sub">max 6.12s</div></div></div>
+  <div class="trends"><div class="trend"><div class="trend-head">Accuracy % over runs<span class="trend-latest">100.0%</span></div><svg viewBox="0 0 520 90" width="100%" height="90" preserveAspectRatio="none"><polyline fill="none" stroke="#2b6cb0" stroke-width="2" points="8.0,8.0 512.0,8.0"/><circle cx="8.0" cy="8.0" r="2.5" fill="#2b6cb0"/><circle cx="512.0" cy="8.0" r="2.5" fill="#2b6cb0"/></svg></div><div class="trend"><div class="trend-head">Deflection % over runs<span class="trend-latest">100.0%</span></div><svg viewBox="0 0 520 90" width="100%" height="90" preserveAspectRatio="none"><polyline fill="none" stroke="#2b6cb0" stroke-width="2" points="8.0,8.0 512.0,8.0"/><circle cx="8.0" cy="8.0" r="2.5" fill="#2b6cb0"/><circle cx="512.0" cy="8.0" r="2.5" fill="#2b6cb0"/></svg></div><div class="trend"><div class="trend-head">Faithfulness % over runs<span class="trend-latest">100.0%</span></div><svg viewBox="0 0 520 90" width="100%" height="90" preserveAspectRatio="none"><polyline fill="none" stroke="#2b6cb0" stroke-width="2" points="8.0,8.0 512.0,8.0"/><circle cx="8.0" cy="8.0" r="2.5" fill="#2b6cb0"/><circle cx="512.0" cy="8.0" r="2.5" fill="#2b6cb0"/></svg></div></div>
+  <h2>Latest run — per-scenario detail</h2>
+  <table>
+    <tr><th>Result</th><th>Scenario</th><th>Category</th><th>Prompt</th>
+        <th>Judge</th><th>Latency</th><th>Response</th></tr>
+    <tr><td><span class="badge ok">PASS</span></td><td>order-1001-happy</td><td>order-status</td><td class="prompt">Where is my order 1001?</td><td><span class="badge ok">FAITHFUL</span></td><td>6.12s</td><td class="resp">Your order 1001 for the Trailblazer Rain Jacket has shipped. The expected delivery date is August 5, 2026. Would you like the tracking number or need help with anything else?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>order-1002-null-delivery</td><td>order-status</td><td class="prompt">When will order 1002 be delivered and what&#x27;s the tracking number?</td><td><span class="badge ok">FAITHFUL</span></td><td>4.26s</td><td class="resp">Order 1002 is still processing. There is no delivery date or tracking number available yet. Would you like to receive an update when the order ships, or do you have another question about your order?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>order-9999-notfound</td><td>order-status</td><td class="prompt">Can you check the status of order 9999?</td><td><span class="badge ok">FAITHFUL</span></td><td>4.33s</td><td class="resp">I could not find an order with the number 9999. Would you like me to create a support case to help resolve this? If you have another order number, please provide it and I can check again.</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>return-policy-window</td><td>policy-rag</td><td class="prompt">What is your return policy?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.83s</td><td class="resp">Northern Trail Outfitters accepts returns within 30 days of the delivery date for a full refund. Items must be unworn, unwashed, and in their original packaging with tags attached. Refunds are issued to the original paym</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>return-refund-timing</td><td>policy-rag</td><td class="prompt">How long does a refund take once I return something?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.25s</td><td class="resp">Refunds are issued to the original payment method within 5 to 7 business days after Northern Trail Outfitters receives the returned item. Would you like help with starting a return or tracking your refund?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>shipping-overnight-cutoff</td><td>policy-rag</td><td class="prompt">How much is overnight shipping and is there a cutoff time?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.86s</td><td class="resp">Overnight shipping costs $29.95 and arrives the next business day when ordered before 12:00 PM Pacific Time. Orders placed after this cutoff or on weekends/holidays begin processing the next business day. Would you like </td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>shipping-free-threshold</td><td>policy-rag</td><td class="prompt">Do I get free standard shipping?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.32s</td><td class="resp">Standard shipping is free on orders over $50. If your order is $50 or less, standard shipping costs $5.95. Would you like help checking if your order qualifies?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>warranty-outerwear</td><td>policy-rag</td><td class="prompt">What&#x27;s the warranty on a jacket?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.31s</td><td class="resp">Northern Trail Outfitters backs all outerwear, including jackets, with a limited lifetime warranty against manufacturing defects in materials and workmanship. This warranty covers defects only and does not cover normal w</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>warranty-footwear</td><td>policy-rag</td><td class="prompt">How long is the warranty on hiking boots?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.43s</td><td class="resp">Hiking boots from Northern Trail Outfitters carry a 1-year warranty from the date of purchase. This warranty covers defects in materials and workmanship only; it does not cover normal wear and tear, misuse, or improper c</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>price-match-no-article</td><td>faithfulness-negative</td><td class="prompt">Do you price match competitors like REI?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.33s</td><td class="resp">I do not have information about a price match policy for Northern Trail Outfitters. If you would like, I can create a support case to have this question addressed by our team. Would you like me to do that?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>membership-invented</td><td>faithfulness-negative</td><td class="prompt">What are the perks of your gold membership tier?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.26s</td><td class="resp">I do not have information about the perks of the gold membership tier in the available content. Would you like me to create a support case to get more details for you?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>store-hours-invented</td><td>faithfulness-negative</td><td class="prompt">What time does your San Francisco store close today?</td><td><span class="badge ok">FAITHFUL</span></td><td>4.23s</td><td class="resp">I can help with information about returns, shipping, or warranty policies for Northern Trail Outfitters. Is there something specific you would like to know about these topics?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>return-worn-edge</td><td>policy-rag</td><td class="prompt">Can I return hiking boots I&#x27;ve worn on a trail a few times?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.83s</td><td class="resp">According to the Northern Trail Outfitters return policy, footwear may be returned only if it has not been worn outdoors. Since you have worn the hiking boots on a trail, they would not be eligible for return. If you hav</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>combined-order-and-return</td><td>multi-intent</td><td class="prompt">My order 1001 arrived but I want to return it, how do I do that?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.54s</td><td class="resp">Northern Trail Outfitters accepts returns within 30 days of the delivery date for a full refund, as long as items are unworn, unwashed, and in their original packaging with tags attached. To start a return, you need your</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>expedited-shipping-price</td><td>policy-rag</td><td class="prompt">How much does expedited shipping cost and how fast is it?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.39s</td><td class="resp">Expedited shipping costs $14.95 and takes 2 to 3 business days. This information is from the NTO Shipping Policy. Would you like details about other shipping options?</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>warranty-claim-timeline</td><td>policy-rag</td><td class="prompt">If I file a warranty claim, how long until it&#x27;s reviewed?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.54s</td><td class="resp">Warranty claims are typically reviewed within 3 to 5 business days. If you have any other questions about the process or need help starting a claim, let me know!</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>return-cost-threshold</td><td>policy-rag</td><td class="prompt">Do I have to pay for return shipping?</td><td><span class="badge ok">FAITHFUL</span></td><td>3.38s</td><td class="resp">Return shipping is free for orders over $75. For all other orders, a $6.95 return shipping fee applies. If you have more questions about returns, let me know!</td></tr>
+<tr><td><span class="badge ok">PASS</span></td><td>order-negative-refund-invented</td><td>faithfulness-negative</td><td class="prompt">Has the refund for order 1001 been processed to my card yet?</td><td><span class="badge ok">FAITHFUL</span></td><td>4.23s</td><td class="resp">I do not have access to specific order or refund statuses. According to Northern Trail Outfitters&#x27; return policy, refunds are issued to the original payment method within 5 to 7 business days after the returned item is r</td></tr>
+  </table>
+</div></body></html>

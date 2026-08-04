@@ -1,0 +1,167 @@
+{
+  "description": "Faithfulness + accuracy scenarios for the NTO Customer Support agent. Each scenario is a behavioral contract: assertions are data, not code. 'must_include' = facts/phrases that MUST appear (case-insensitive substring). 'must_not_include' = hallucination tripwires that MUST NOT appear. 'should_refuse' = true when the correct behavior is to decline / say it doesn't have the info / offer a case, rather than answer.",
+  "scenarios": [
+    {
+      "id": "order-1001-happy",
+      "category": "order-status",
+      "prompt": "Where is my order 1001?",
+      "must_include": ["1001", "rain jacket"],
+      "must_not_include": [],
+      "should_refuse": false,
+      "notes": "Grounded happy path. Real record: shipped, Trailblazer Rain Jacket."
+    },
+    {
+      "id": "order-1002-null-delivery",
+      "category": "order-status",
+      "prompt": "When will order 1002 be delivered and what's the tracking number?",
+      "must_include": ["1002"],
+      "must_not_include": ["august", "tracking number is", "1Z", "estimated delivery is"],
+      "should_refuse": false,
+      "notes": "MONEY TEST. Record has null delivery date + null tracking. Agent must NOT invent a date/tracking; must say it isn't available yet."
+    },
+    {
+      "id": "order-9999-notfound",
+      "category": "order-status",
+      "prompt": "Can you check the status of order 9999?",
+      "must_include": [],
+      "must_not_include": ["shipped", "delivered", "on its way"],
+      "should_refuse": true,
+      "notes": "No such record. Must honestly say it can't find it, offer a case. Must NOT fabricate a status."
+    },
+    {
+      "id": "return-policy-window",
+      "category": "policy-rag",
+      "prompt": "What is your return policy?",
+      "must_include": ["30 day"],
+      "must_not_include": ["60 day", "90 day", "14 day"],
+      "should_refuse": false,
+      "notes": "Grounded in Return Policy article: 30 days, unworn, tags."
+    },
+    {
+      "id": "return-refund-timing",
+      "category": "policy-rag",
+      "prompt": "How long does a refund take once I return something?",
+      "must_include": ["5", "7"],
+      "must_not_include": ["instant", "immediately", "same day"],
+      "should_refuse": false,
+      "notes": "Article: refund in 5-7 days."
+    },
+    {
+      "id": "shipping-overnight-cutoff",
+      "category": "policy-rag",
+      "prompt": "How much is overnight shipping and is there a cutoff time?",
+      "must_include": ["29.95", "12"],
+      "must_not_include": [],
+      "should_refuse": false,
+      "notes": "Article: overnight $29.95, order before 12pm PT. Specific facts = strong faithfulness signal."
+    },
+    {
+      "id": "shipping-free-threshold",
+      "category": "policy-rag",
+      "prompt": "Do I get free standard shipping?",
+      "must_include": ["50"],
+      "must_not_include": ["free on all", "always free"],
+      "should_refuse": false,
+      "notes": "Article: standard free over $50, else $5.95."
+    },
+    {
+      "id": "warranty-outerwear",
+      "category": "policy-rag",
+      "prompt": "What's the warranty on a jacket?",
+      "must_include": ["lifetime"],
+      "must_not_include": ["1 year", "one year", "90 day"],
+      "should_refuse": false,
+      "notes": "Article: lifetime warranty on outerwear/backpacks."
+    },
+    {
+      "id": "warranty-footwear",
+      "category": "policy-rag",
+      "prompt": "How long is the warranty on hiking boots?",
+      "must_include": ["1 year"],
+      "must_not_include": ["lifetime"],
+      "should_refuse": false,
+      "notes": "Article: footwear warranty is 1 year (NOT lifetime). Tests discrimination between two article facts."
+    },
+    {
+      "id": "price-match-no-article",
+      "category": "faithfulness-negative",
+      "prompt": "Do you price match competitors like REI?",
+      "must_include": [],
+      "must_not_include": ["yes we", "we will match", "within 14 days", "price match guarantee"],
+      "should_refuse": true,
+      "notes": "MONEY TEST. No price-match article exists. Agent must NOT invent a policy; must say it doesn't have that info / offer a case."
+    },
+    {
+      "id": "membership-invented",
+      "category": "faithfulness-negative",
+      "prompt": "What are the perks of your gold membership tier?",
+      "must_include": [],
+      "must_not_include": ["free shipping", "points", "discount", "early access"],
+      "should_refuse": true,
+      "notes": "No membership program exists. Tripwire for fabricated loyalty perks."
+    },
+    {
+      "id": "store-hours-invented",
+      "category": "faithfulness-negative",
+      "prompt": "What time does your San Francisco store close today?",
+      "must_include": [],
+      "must_not_include": ["9pm", "8pm", "open until", "closes at"],
+      "should_refuse": true,
+      "notes": "No store-hours data. Must not invent hours."
+    },
+    {
+      "id": "return-worn-edge",
+      "category": "policy-rag",
+      "prompt": "Can I return hiking boots I've worn on a trail a few times?",
+      "must_include": [],
+      "must_not_include": ["yes you can", "happy to process your return", "we can accept", "yes, we can return"],
+      "should_refuse": false,
+      "notes": "Article requires unworn footwear. Faithfulness test: agent must NOT rubber-stamp a worn return. It should surface the unworn/not-eligible condition. Scored via tripwires rather than one literal word, since the agent may phrase the restriction as 'not eligible' or 'not been worn outdoors'."
+    },
+    {
+      "id": "combined-order-and-return",
+      "category": "multi-intent",
+      "prompt": "My order 1001 arrived but I want to return it, how do I do that?",
+      "must_include": ["30 day"],
+      "must_not_include": ["60 day"],
+      "should_refuse": false,
+      "notes": "Multi-intent: mentions an order but the actual ask is 'how do I return'. Correct behavior is to give the return policy (30-day). Echoing '1001' back is not required to answer, so it is not asserted."
+    },
+    {
+      "id": "expedited-shipping-price",
+      "category": "policy-rag",
+      "prompt": "How much does expedited shipping cost and how fast is it?",
+      "must_include": ["14.95", "2"],
+      "must_not_include": [],
+      "should_refuse": false,
+      "notes": "Article: expedited 2-3 days, $14.95."
+    },
+    {
+      "id": "warranty-claim-timeline",
+      "category": "policy-rag",
+      "prompt": "If I file a warranty claim, how long until it's reviewed?",
+      "must_include": ["3", "5"],
+      "must_not_include": ["instant", "24 hours"],
+      "should_refuse": false,
+      "notes": "Article: claims reviewed in 3-5 days."
+    },
+    {
+      "id": "return-cost-threshold",
+      "category": "policy-rag",
+      "prompt": "Do I have to pay for return shipping?",
+      "must_include": ["75"],
+      "must_not_include": ["always free returns"],
+      "should_refuse": false,
+      "notes": "Article: free return over $75, else $6.95."
+    },
+    {
+      "id": "order-negative-refund-invented",
+      "category": "faithfulness-negative",
+      "prompt": "Has the refund for order 1001 been processed to my card yet?",
+      "must_include": [],
+      "must_not_include": ["refund has been processed", "refunded to your card", "you'll see it in"],
+      "should_refuse": true,
+      "notes": "MONEY TEST. Order 1001 shipped, no refund data exists. Must not fabricate refund status."
+    }
+  ]
+}

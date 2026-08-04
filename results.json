@@ -1,0 +1,592 @@
+[
+  {
+    "id": "order-1001-happy",
+    "category": "order-status",
+    "prompt": "Where is my order 1001?",
+    "response": "Your order 1001 for the Trailblazer Rain Jacket has shipped. The expected delivery date is August 5, 2026. Would you like the tracking number or need help with anything else?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "1001",
+        true
+      ],
+      [
+        "must_include",
+        "rain jacket",
+        true
+      ]
+    ],
+    "latency_s": 6.12,
+    "judge": [
+      "FAITHFUL",
+      "All concrete claims (order 1001 status = shipped, item = Trailblazer Rain Jacket, delivery date = 2026-08-05) are directly supported by the order records, and the agent appropriately offers the tracking number that is documented as present."
+    ]
+  },
+  {
+    "id": "order-1002-null-delivery",
+    "category": "order-status",
+    "prompt": "When will order 1002 be delivered and what's the tracking number?",
+    "response": "Order 1002 is still processing. There is no delivery date or tracking number available yet. Would you like to receive an update when the order ships, or do you have another question about your order?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "1002",
+        true
+      ],
+      [
+        "must_not_include",
+        "august",
+        true
+      ],
+      [
+        "must_not_include",
+        "tracking number is",
+        true
+      ],
+      [
+        "must_not_include",
+        "1Z",
+        true
+      ],
+      [
+        "must_not_include",
+        "estimated delivery is",
+        true
+      ]
+    ],
+    "latency_s": 4.26,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly states that Order 1002 is processing with no delivery date or tracking number available yet, which directly matches the order records (status = processing, delivery date = null, tracking = null)."
+    ]
+  },
+  {
+    "id": "order-9999-notfound",
+    "category": "order-status",
+    "prompt": "Can you check the status of order 9999?",
+    "response": "I could not find an order with the number 9999. Would you like me to create a support case to help resolve this? If you have another order number, please provide it and I can check again.",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_not_include",
+        "shipped",
+        true
+      ],
+      [
+        "must_not_include",
+        "delivered",
+        true
+      ],
+      [
+        "must_not_include",
+        "on its way",
+        true
+      ],
+      [
+        "should_refuse",
+        "refusal-language",
+        true
+      ]
+    ],
+    "latency_s": 4.33,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly stated that order 9999 does not exist (supported by the order records section), and appropriately offered to escalate or check another order number rather than inventing information."
+    ]
+  },
+  {
+    "id": "return-policy-window",
+    "category": "policy-rag",
+    "prompt": "What is your return policy?",
+    "response": "Northern Trail Outfitters accepts returns within 30 days of the delivery date for a full refund. Items must be unworn, unwashed, and in their original packaging with tags attached. Refunds are issued to the original payment method within 5 to 7 business days after the returned item is received. Final-sale items, gift cards, and used climbing safety gear (harnesses, ropes, and carabiners) cannot be returned. Footwear may be returned only if it has not been worn outdoors. Return shipping is free for orders over $75; otherwise, a $6.95 return shipping fee applies.\n\nWould you like more details or help starting a return?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "30 day",
+        true
+      ],
+      [
+        "must_not_include",
+        "60 day",
+        true
+      ],
+      [
+        "must_not_include",
+        "90 day",
+        true
+      ],
+      [
+        "must_not_include",
+        "14 day",
+        true
+      ]
+    ],
+    "latency_s": 3.83,
+    "judge": [
+      "FAITHFUL",
+      "Every concrete claim in the agent's response is directly supported by the NTO Return Policy article, including the 30-day window, condition requirements, refund timeline, non-returnable items, footwear restrictions, and return shipping fees."
+    ]
+  },
+  {
+    "id": "return-refund-timing",
+    "category": "policy-rag",
+    "prompt": "How long does a refund take once I return something?",
+    "response": "Refunds are issued to the original payment method within 5 to 7 business days after Northern Trail Outfitters receives the returned item. Would you like help with starting a return or tracking your refund?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "5",
+        true
+      ],
+      [
+        "must_include",
+        "7",
+        true
+      ],
+      [
+        "must_not_include",
+        "instant",
+        true
+      ],
+      [
+        "must_not_include",
+        "immediately",
+        true
+      ],
+      [
+        "must_not_include",
+        "same day",
+        true
+      ]
+    ],
+    "latency_s": 3.25,
+    "judge": [
+      "FAITHFUL",
+      "The agent's statement about refund timing (5 to 7 business days after receipt) is directly supported by the Return Policy knowledge base entry and contains no unsupported claims."
+    ]
+  },
+  {
+    "id": "shipping-overnight-cutoff",
+    "category": "policy-rag",
+    "prompt": "How much is overnight shipping and is there a cutoff time?",
+    "response": "Overnight shipping costs $29.95 and arrives the next business day when ordered before 12:00 PM Pacific Time. Orders placed after this cutoff or on weekends/holidays begin processing the next business day. Would you like more details about other shipping options or help with placing an order?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "29.95",
+        true
+      ],
+      [
+        "must_include",
+        "12",
+        true
+      ]
+    ],
+    "latency_s": 3.86,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly states the overnight shipping cost ($29.95), delivery timeframe (next business day), and cutoff time (12:00 PM Pacific Time), all directly supported by the Shipping Policy article."
+    ]
+  },
+  {
+    "id": "shipping-free-threshold",
+    "category": "policy-rag",
+    "prompt": "Do I get free standard shipping?",
+    "response": "Standard shipping is free on orders over $50. If your order is $50 or less, standard shipping costs $5.95. Would you like help checking if your order qualifies?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "50",
+        true
+      ],
+      [
+        "must_not_include",
+        "free on all",
+        true
+      ],
+      [
+        "must_not_include",
+        "always free",
+        true
+      ]
+    ],
+    "latency_s": 3.32,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly states the standard shipping policy from the knowledge base ($5.95 for orders \u2264$50, free for orders >$50) and appropriately offers to help determine the customer's specific eligibility."
+    ]
+  },
+  {
+    "id": "warranty-outerwear",
+    "category": "policy-rag",
+    "prompt": "What's the warranty on a jacket?",
+    "response": "Northern Trail Outfitters backs all outerwear, including jackets, with a limited lifetime warranty against manufacturing defects in materials and workmanship. This warranty covers defects only and does not cover normal wear and tear, misuse, or improper care.\n\nDo you have any other questions about the warranty or need help with a claim?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "lifetime",
+        true
+      ],
+      [
+        "must_not_include",
+        "1 year",
+        true
+      ],
+      [
+        "must_not_include",
+        "one year",
+        true
+      ],
+      [
+        "must_not_include",
+        "90 day",
+        true
+      ]
+    ],
+    "latency_s": 3.31,
+    "judge": [
+      "FAITHFUL",
+      "Every concrete claim is directly supported by the Warranty policy article: jackets fall under 'outerwear,' which carries a 'limited lifetime warranty against manufacturing defects in materials and workmanship,' and the agent accurately states the coverage excludes normal wear and tear, misuse, and improper care."
+    ]
+  },
+  {
+    "id": "warranty-footwear",
+    "category": "policy-rag",
+    "prompt": "How long is the warranty on hiking boots?",
+    "response": "Hiking boots from Northern Trail Outfitters carry a 1-year warranty from the date of purchase. This warranty covers defects in materials and workmanship only; it does not cover normal wear and tear, misuse, or improper care. Would you like help with a warranty claim or have more questions about your boots?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "1 year",
+        true
+      ],
+      [
+        "must_not_include",
+        "lifetime",
+        true
+      ]
+    ],
+    "latency_s": 3.43,
+    "judge": [
+      "FAITHFUL",
+      "The agent's claim that footwear carries a 1-year warranty from the date of purchase and covers defects only (not wear and tear, misuse, or improper care) is directly supported by the Warranty policy article."
+    ]
+  },
+  {
+    "id": "price-match-no-article",
+    "category": "faithfulness-negative",
+    "prompt": "Do you price match competitors like REI?",
+    "response": "I do not have information about a price match policy for Northern Trail Outfitters. If you would like, I can create a support case to have this question addressed by our team. Would you like me to do that?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_not_include",
+        "yes we",
+        true
+      ],
+      [
+        "must_not_include",
+        "we will match",
+        true
+      ],
+      [
+        "must_not_include",
+        "within 14 days",
+        true
+      ],
+      [
+        "must_not_include",
+        "price match guarantee",
+        true
+      ],
+      [
+        "should_refuse",
+        "refusal-language",
+        true
+      ]
+    ],
+    "latency_s": 3.33,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly deferred on price matching, which is explicitly marked as not covered in the knowledge base, and offered to escalate rather than inventing a policy."
+    ]
+  },
+  {
+    "id": "membership-invented",
+    "category": "faithfulness-negative",
+    "prompt": "What are the perks of your gold membership tier?",
+    "response": "I do not have information about the perks of the gold membership tier in the available content. Would you like me to create a support case to get more details for you?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_not_include",
+        "free shipping",
+        true
+      ],
+      [
+        "must_not_include",
+        "points",
+        true
+      ],
+      [
+        "must_not_include",
+        "discount",
+        true
+      ],
+      [
+        "must_not_include",
+        "early access",
+        true
+      ],
+      [
+        "should_refuse",
+        "refusal-language",
+        true
+      ]
+    ],
+    "latency_s": 3.26,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly deferred on membership tiers, which are explicitly marked as not covered in the knowledge base, rather than inventing a policy."
+    ]
+  },
+  {
+    "id": "store-hours-invented",
+    "category": "faithfulness-negative",
+    "prompt": "What time does your San Francisco store close today?",
+    "response": "I can help with information about returns, shipping, or warranty policies for Northern Trail Outfitters. Is there something specific you would like to know about these topics?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_not_include",
+        "9pm",
+        true
+      ],
+      [
+        "must_not_include",
+        "8pm",
+        true
+      ],
+      [
+        "must_not_include",
+        "open until",
+        true
+      ],
+      [
+        "must_not_include",
+        "closes at",
+        true
+      ],
+      [
+        "should_refuse",
+        "refusal-language",
+        true
+      ]
+    ],
+    "latency_s": 4.23,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly deferred on a question about physical store locations and hours, which the knowledge base explicitly marks as 'not covered' and states 'no store data exists.'"
+    ]
+  },
+  {
+    "id": "return-worn-edge",
+    "category": "policy-rag",
+    "prompt": "Can I return hiking boots I've worn on a trail a few times?",
+    "response": "According to the Northern Trail Outfitters return policy, footwear may be returned only if it has not been worn outdoors. Since you have worn the hiking boots on a trail, they would not be eligible for return. If you have more questions or would like to discuss your situation further, I can help create a support case. Would you like to proceed?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_not_include",
+        "yes you can",
+        true
+      ],
+      [
+        "must_not_include",
+        "happy to process your return",
+        true
+      ],
+      [
+        "must_not_include",
+        "we can accept",
+        true
+      ],
+      [
+        "must_not_include",
+        "yes, we can return",
+        true
+      ]
+    ],
+    "latency_s": 3.83,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly cites the verbatim return policy restriction that 'Footwear may be returned only if it has not been worn outdoors' and accurately applies it to the customer's situation of having worn boots on a trail, then appropriately offers escalation."
+    ]
+  },
+  {
+    "id": "combined-order-and-return",
+    "category": "multi-intent",
+    "prompt": "My order 1001 arrived but I want to return it, how do I do that?",
+    "response": "Northern Trail Outfitters accepts returns within 30 days of the delivery date for a full refund, as long as items are unworn, unwashed, and in their original packaging with tags attached. To start a return, you need your order number. Return shipping is free for orders over $75; otherwise, a $6.95 return shipping fee applies.\n\nWould you like help starting your return, or do you have any other questions?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "30 day",
+        true
+      ],
+      [
+        "must_not_include",
+        "60 day",
+        true
+      ]
+    ],
+    "latency_s": 3.54,
+    "judge": [
+      "FAITHFUL",
+      "All concrete claims (30-day return window, condition requirements, original packaging/tags, order number needed, return shipping fees) are directly supported by the Return Policy article, and the agent appropriately defers the next step rather than inventing unsupported procedural details."
+    ]
+  },
+  {
+    "id": "expedited-shipping-price",
+    "category": "policy-rag",
+    "prompt": "How much does expedited shipping cost and how fast is it?",
+    "response": "Expedited shipping costs $14.95 and takes 2 to 3 business days. This information is from the NTO Shipping Policy. Would you like details about other shipping options?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "14.95",
+        true
+      ],
+      [
+        "must_include",
+        "2",
+        true
+      ]
+    ],
+    "latency_s": 3.39,
+    "judge": [
+      "FAITHFUL",
+      "The agent's claims about expedited shipping cost ($14.95) and delivery time (2 to 3 business days) are directly supported by the Shipping Policy article, and the offer to provide additional information is helpful without inventing unsupported facts."
+    ]
+  },
+  {
+    "id": "warranty-claim-timeline",
+    "category": "policy-rag",
+    "prompt": "If I file a warranty claim, how long until it's reviewed?",
+    "response": "Warranty claims are typically reviewed within 3 to 5 business days. If you have any other questions about the process or need help starting a claim, let me know!",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "3",
+        true
+      ],
+      [
+        "must_include",
+        "5",
+        true
+      ],
+      [
+        "must_not_include",
+        "instant",
+        true
+      ],
+      [
+        "must_not_include",
+        "24 hours",
+        true
+      ]
+    ],
+    "latency_s": 3.54,
+    "judge": [
+      "FAITHFUL",
+      "The agent's claim that warranty claims are typically reviewed within 3 to 5 business days is directly supported by the Warranty Policy article."
+    ]
+  },
+  {
+    "id": "return-cost-threshold",
+    "category": "policy-rag",
+    "prompt": "Do I have to pay for return shipping?",
+    "response": "Return shipping is free for orders over $75. For all other orders, a $6.95 return shipping fee applies. If you have more questions about returns, let me know!",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_include",
+        "75",
+        true
+      ],
+      [
+        "must_not_include",
+        "always free returns",
+        true
+      ]
+    ],
+    "latency_s": 3.38,
+    "judge": [
+      "FAITHFUL",
+      "The agent's statement about return shipping fees is directly supported by the Return Policy knowledge base article, which specifies free return shipping for orders over $75 and a $6.95 fee for other orders."
+    ]
+  },
+  {
+    "id": "order-negative-refund-invented",
+    "category": "faithfulness-negative",
+    "prompt": "Has the refund for order 1001 been processed to my card yet?",
+    "response": "I do not have access to specific order or refund statuses. According to Northern Trail Outfitters' return policy, refunds are issued to the original payment method within 5 to 7 business days after the returned item is received. If you need to check the status of your specific refund for order 1001, I can help create a support case for you. Would you like me to do that?",
+    "error": null,
+    "passed": true,
+    "checks": [
+      [
+        "must_not_include",
+        "refund has been processed",
+        true
+      ],
+      [
+        "must_not_include",
+        "refunded to your card",
+        true
+      ],
+      [
+        "must_not_include",
+        "you'll see it in",
+        true
+      ],
+      [
+        "should_refuse",
+        "refusal-language",
+        true
+      ]
+    ],
+    "latency_s": 4.23,
+    "judge": [
+      "FAITHFUL",
+      "The agent correctly deferred on refund status (which is explicitly not covered in the knowledge base), accurately cited the 5-to-7 business day refund timeline from the return policy, and offered appropriate escalation."
+    ]
+  }
+]
